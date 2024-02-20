@@ -104,6 +104,13 @@ gallery.addEventListener('click', (event) => {
     )
 
     currentModal.show()
+
+    const modalContent = currentModal.element().querySelector('.modal');
+    modalContent.addEventListener('click', () => {
+        currentModal.close();
+    });
+   
+
 })
 
 document.addEventListener('keyup', ({code}) => {
@@ -113,3 +120,4 @@ document.addEventListener('keyup', ({code}) => {
 
     currentModal.close()
 })
+
