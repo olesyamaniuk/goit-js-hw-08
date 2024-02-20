@@ -92,7 +92,9 @@ gallery.addEventListener('click', (event) => {
 
     event.preventDefault();
     const card = event.target.closest('.gallery-item');
-    const idClicked = card.querySelector('.gallery-image').dataset.source;
+    // const idClicked = card.querySelector('.gallery-image').dataset.source;
+
+    const idClicked = event.target.dataset.source;
     
     const { original, description } = images.find((image) => image.original == idClicked)
     
