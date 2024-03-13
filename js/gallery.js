@@ -85,41 +85,81 @@ function createImages(images){
 
 
 
-gallery.addEventListener('click', (event) => {
-    if (event.target === event.currentTarget){
-        return;
-        }
+// gallery.addEventListener('click', (event) => {
+//     if (event.target === event.currentTarget){
+//         return;
+//         }
 
-    event.preventDefault();
-    const card = event.target.closest('.gallery-item');
-    // const idClicked = card.querySelector('.gallery-image').dataset.source;
+//     event.preventDefault();
+//     const card = event.target.closest('.gallery-item');
+//     // const idClicked = card.querySelector('.gallery-image').dataset.source;
 
-    const idClicked = event.target.dataset.source;
+//     const idClicked = event.target.dataset.source;
     
-    const { original, description } = images.find((image) => image.original == idClicked)
+//     const { original, description } = images.find((image) => image.original == idClicked)
     
 
-    currentModal = basicLightbox.create(
-    `<div class="modal">
-            <img src="${original}" alt="${description}">
-        </div>`
-    )
+//     currentModal = basicLightbox.create(
+//     `<div class="modal">
+//             <img src="${original}" alt="${description}">
+//         </div>`
+//     )
 
-    currentModal.show()
+//     currentModal.show()
 
-    const modalContent = currentModal.element().querySelector('.modal');
-    modalContent.addEventListener('click', () => {
-        currentModal.close();
-    });
+//     const modalContent = currentModal.element().querySelector('.modal');
+//     modalContent.addEventListener('click', () => {
+//         currentModal.close();
+//     });
    
 
-})
+// })
 
-document.addEventListener('keyup', ({code}) => {
-    if (code !== 'Escape'){
-        return
+// document.addEventListener('keyup', ({code}) => {
+//     if (code !== 'Escape'){
+//         return
+//     }
+
+//     currentModal.close()
+// })
+
+function openModal(original, description) {
+    currentModal = basicLightbox.create(
+      `<div class="modal">
+          <img src="${original}" alt="${description}">
+      </div>`,
+      {
+        onShow: (instance) => {
+          document.addEventListener('keyup', onKeyUp);
+        },
+        onClose: (instance) => {
+          document.removeEventListener('keyup', onKeyUp);
+        }
+      }
+    );
+  
+    currentModal.show();
+  }
+  
+  gallery.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    if (!event.target.closest('.gallery-link')) {
+      return;
     }
-
-    currentModal.close()
-})
-
+  
+    const card = event.target.closest('.gallery-item');
+    const idClicked = event.target.dataset.source;
+    const { original, description } = images.find((image) => image.original === idClicked);
+  
+    openModal(original, description);
+  });
+  
+  function onKeyUp(event) {
+    if (event.code === 'Escape' && currentModal && currentModal.visible()) {
+      currentModal.close();
+    }
+  }
+  
+  // Обробник клавіш "Escape"
+  document.addEventListener('keyup', onKeyUp);
