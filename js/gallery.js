@@ -129,15 +129,14 @@ function openModal(original, description) {
           <img src="${original}" alt="${description}">
       </div>`,
       {
-        onShow: (instance) => {
+        onShow: (event) => {
           document.addEventListener('keyup', onKeyUp);
         },
-        onClose: (instance) => {
+        onClose: (event) => {
           document.removeEventListener('keyup', onKeyUp);
         }
       }
     );
-  
     currentModal.show();
   }
   
@@ -148,7 +147,6 @@ function openModal(original, description) {
       return;
     }
   
-    const card = event.target.closest('.gallery-item');
     const idClicked = event.target.dataset.source;
     const { original, description } = images.find((image) => image.original === idClicked);
   
@@ -161,5 +159,4 @@ function openModal(original, description) {
     }
   }
   
-  // Обробник клавіш "Escape"
-  document.addEventListener('keyup', onKeyUp);
+  // document.addEventListener('keyup', onKeyUp);
